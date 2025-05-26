@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // فعال‌سازی CORS برای همه درخواست‌ها
 app.use(cors());
@@ -11,10 +11,20 @@ app.use(cors());
 app.get('/proxy', async (req, res) => {
   const { action, userId, word } = req.query;
 
-  const scriptUrl = `https://script.google.com/macros/s/AKfycbyRG94adV_4DXmb9YKUqHw81fI1HpptRvPfIiwn5FoNu5iBQe_scQKxzd5zTL7mZVXH5A/exec?action=${action}&userId=${userId}${word ? `&word=${encodeURIComponent(word)}` : ''}`;
+  if (!action || !userId) {
+    return res.status(400).json({ error: 'Missing required query parameters: action and userId' });
+  }
+
+  const scriptUrl = `https://script.google.com/macros/s/AKfycbyRG94adV_4DXmb9YKUqHw81fI1HpptRvPfIiwn5FoNu5iBQe_scQKxzd5zTL7mZVXH5A/exec?action=${encodeURIComponent(action)}&userId=${encodeURIComponent(userId)}${word ? `&word=${encodeURIComponent(word)}` : ''}`;
 
   try {
     const response = await fetch(scriptUrl);
+
+    if (!response.ok) {
+      console.error('Error response from script:', response.status, response.statusText);
+      return res.status(response.status).json({ error: Upstream error: ${response.statusText} });
+    }
+
     const data = await response.json();
     res.json(data);
   } catch (error) {
