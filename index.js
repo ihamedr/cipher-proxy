@@ -22,7 +22,7 @@ app.get('/proxy', async (req, res) => {
 
     if (!response.ok) {
       console.error('Error response from script:', response.status, response.statusText);
-      return res.status(response.status).json({ error: Upstream error: ${response.statusText} });
+      return res.status(response.status).json({ error: `Upstream error: ${response.statusText}` });
     }
 
     const data = await response.json();
