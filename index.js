@@ -15,7 +15,7 @@ app.get('/proxy', async (req, res) => {
     return res.status(400).json({ error: 'Missing required query parameters: action and userId' });
   }
 
-  const scriptUrl = `https://script.google.com/macros/s/AKfycbyzV4s99akLYxGNjVKhzUwghzsquvbgh5eoewXltve4f22mxCueuP7Y1M-79FV_ACkMDg/exec?action=${encodeURIComponent(action)}&userId=${encodeURIComponent(userId)}${word ? `&word=${encodeURIComponent(word)}` : ''}`;
+  const scriptUrl = `https://script.google.com/macros/s/AKfycbyq-NtKwR1JYAX25ztqisVdw64HfPEgGLrERUvDG-Fb42OUhhPCbnekrt47ZAWwh2gnpg/exec?action=${encodeURIComponent(action)}&userId=${encodeURIComponent(userId)}${word ? `&word=${encodeURIComponent(word)}` : ''}`;
 
   try {
     const response = await fetch(scriptUrl);
